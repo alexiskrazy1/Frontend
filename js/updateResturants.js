@@ -20,7 +20,7 @@ return;
 
 try {
 const res = await fetch(
-`https://restaurantsbackend.onrender.com/api/v1/restaurants/${id}`,
+`https://restaurantsbackend-us4c.onrender.com/api/v1/restaurants/${id}`,
 {
 method: "PUT",
 headers: { "Content-Type": "application/json" },

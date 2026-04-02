@@ -17,7 +17,7 @@ formEl.addEventListener("submit", async (event) => {
   }
 
   const res = await fetch(
-    "https://restaurantsbackend.onrender.com/api/v1/restaurants",
+    "https://restaurantsbackend-us4c.onrender.com/api/v1/restaurants",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
