@@ -6,6 +6,10 @@ formEl.addEventListener("submit", async (event) => {
   const formData = new FormData(formEl);
   const data = Object.fromEntries(formData);
 
+  // 🔍 DEBUG LOGS
+  console.log("Form data object:", data);
+  console.log("restaurant_name value:", data.restaurant_name);
+
   // Basic validation
   if (!data.restaurant_name) {
     $.toaster({
@@ -16,29 +20,39 @@ formEl.addEventListener("submit", async (event) => {
     return;
   }
 
-  const res = await fetch(
-    "https://restaurantsbackend-us4c.onrender.com/api/v1/restaurants",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }
-  );
+  try {
+    const res = await fetch(
+      "https://restaurantsbackend-us4c.onrender.com/api/v1/restaurants",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    );
 
-  if (!res.ok) {
+    console.log("Status:", res.status);
+
+    const responseData = await res.json().catch(() => null);
+    console.log("Response:", responseData);
+
+    if (!res.ok) {
+      throw new Error(responseData?.error || "Add failed");
+    }
+
+    $.toaster({
+      priority: "success",
+      title: "Restaurants",
+      message: "Restaurant added successfully",
+    });
+
+    formEl.reset();
+  } catch (err) {
+    console.error("ERROR:", err);
+
     $.toaster({
       priority: "danger",
       title: "Error",
-      message: "Failed to add restaurant",
+      message: err.message,
     });
-    return;
   }
-
-  $.toaster({
-    priority: "success",
-    title: "Restaurants",
-    message: "Restaurant added successfully",
-  });
-
-  formEl.reset();
 });
